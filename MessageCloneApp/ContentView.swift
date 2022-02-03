@@ -9,11 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var messages = Message.messages
+    @State private var showingAlert = false
+   
+    
+    // Button Animation
+    @State var isEditing = false
+    @State var selection = Set<String>()
+    
+    
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
-                List {
-                    ForEach(messages) { message in
+                List() {
+                   ForEach(messages) { message in
                         HStack {
                             ImageCell(message: message, width: 50)
                             VStack(alignment: .leading) {
@@ -23,20 +31,31 @@ struct ContentView: View {
                                     Spacer()
                                 }
                                 Text(message.messageContent)
+                                    .lineLimit(2)
                                     .foregroundColor(.secondary)
-                                    .padding(.bottom, 5)
-                            }
+                                // Text limite
+                                // GroupBox
+                                    
+//                                    .padding(.bottom, 2)
+                            }.padding(.bottom)
                         }
                     }
                     .onDelete(perform: deletMessage)
                 }
                 .toolbar {
                     ToolbarItem(placement: ToolbarItemPlacement.navigationBarLeading) {
-                        EditButton()
-                        
+                      EditButton()
+                    
+                        /*
+                            .alert("Do you realy want to delet this conversation ?", isPresented: $showingAlert) {
+                                Button("Yes", role: .destructive) { }
+                                Button("No", role: .cancel) { }
+                            } message: {
+                                Text("This conversation will be definitevely deleted.")
+                            }*/
                     }
                     ToolbarItem(placement: ToolbarItemPlacement.navigationBarTrailing) {
-                        Button(action: {}, label: { Image(systemName: "square.and.pencil")})
+                        Button(action: {}, label: { Image(systemName: "square.and.pencil")}).animation(.easeIn, value: 0.5)
                     }
                 }
             }
